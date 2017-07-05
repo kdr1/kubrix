@@ -44,7 +44,7 @@ var Kubrix = function (_PureComponent) {
 
 		_this.kube = {
 			whole: null,
-			reference: {
+			peices: {
 				c1: null,
 				c2: null,
 				c3: null,
@@ -58,7 +58,7 @@ var Kubrix = function (_PureComponent) {
 				c11: null,
 				c12: null,
 				c13: null,
-				c14: null,
+				// c14 does not exist
 				c15: null,
 				c16: null,
 				c17: null,
@@ -75,30 +75,29 @@ var Kubrix = function (_PureComponent) {
 			},
 			sections: {
 				x: {
-					left: [],
-					middle: [],
-					right: []
+					left: {},
+					middle: {},
+					right: {}
 				},
 				y: {
-					front: [],
-					middle: [],
-					back: []
+					front: {},
+					middle: {},
+					back: {}
 				},
 				z: {
-					top: [],
-					middle: [],
-					bottom: []
+					top: {},
+					middle: {},
+					bottom: {}
 				}
-			}
-		};
-		_this.previousMouseLocation = {
-			x: 0,
-			y: 0
+			},
+			// this will be set once the initial state is calculated
+			completedState: null
 		};
 
 		_this.init = _this.init.bind(_this);
 		_this.animate = _this.animate.bind(_this);
 		_this.render3j = _this.render3j.bind(_this);
+		_this.rotateSection = _this.rotateSection.bind(_this);
 		return _this;
 	}
 
@@ -170,96 +169,9 @@ var Kubrix = function (_PureComponent) {
 			loader.crossOrigin = "";
 			loader.load("../../assets/json/kubrix.json", function (object) {
 
-				_this2.kube.all = object.children[0];
+				setInitialState.call(_this2, object);
 
-				object.traverse(function (child) {
-					// take light from scene and adjust for 3js
-					if (child instanceof THREE.PointLight) {
-						child.intensity = 10;
-						child.position.x = 0;
-						child.position.y = 20;
-						child.position.z = 15;
-					}
-					switch (child.name) {
-						case "c1":
-							_this2.kube.reference.c1 = child;
-							_this2.kube.sections.x.left.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.top.push(child.name);
-							break;
-						case "c2":
-							_this2.kube.reference.c2 = child;
-							_this2.kube.sections.x.middle.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.top.push(child.name);
-							break;
-						case "c3":
-							_this2.kube.reference.c3 = child;
-							_this2.kube.sections.x.right.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.top.push(child.name);
-							break;
-						case "c4":
-							_this2.kube.reference.c4 = child;
-							_this2.kube.sections.x.left.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.middle.push(child.name);
-							break;
-						case "c5":
-							_this2.kube.reference.c5 = child;
-							_this2.kube.sections.x.middle.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.middle.push(child.name);
-							break;
-						case "c6":
-							_this2.kube.reference.c6 = child;
-							_this2.kube.sections.x.right.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.middle.push(child.name);
-							break;
-						case "c7":
-							_this2.kube.reference.c7 = child;
-							_this2.kube.sections.x.left.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.bottom.push(child.name);
-							break;
-						case "c8":
-							_this2.kube.reference.c8 = child;
-							_this2.kube.sections.x.middle.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.bottom.push(child.name);
-							break;
-						case "c9":
-							_this2.kube.reference.c9 = child;
-							_this2.kube.sections.x.right.push(child.name);
-							_this2.kube.sections.y.front.push(child.name);
-							_this2.kube.sections.z.bottom.push(child.name);
-							break;
-						case "c10":
-						case "c11":
-						case "c12":
-						case "c13":
-						case "c14":
-						case "c15":
-						case "c16":
-						case "c17":
-						case "c18":
-						case "c19":
-						case "c20":
-						case "c21":
-						case "c22":
-						case "c23":
-						case "c24":
-						case "c25":
-						case "c26":
-						case "c27":
-							break;
-					}
-				});
-
-				_this2.kube.sections.y.front.forEach(function (faceName) {
-					_this2.kube.reference[faceName].rotation.y -= Math.PI / 2;
-				});
+				_this2.rotateSection(_this2.kube.sections.z.bottom, "z");
 
 				// add object to scene
 				_this2.three.Scene.add(object);
@@ -267,6 +179,20 @@ var Kubrix = function (_PureComponent) {
 				// animate the scene
 				_this2.animate();
 			});
+		}
+	}, {
+		key: "rotateSection",
+		value: function rotateSection(section, axis, counterClockwise) {
+			var key = void 0;
+			if (!counterClockwise) {
+				for (key in section) {
+					this.kube.peices[section[key]].rotation[axis] -= Math.PI / 2;
+				}
+			} else {
+				for (key in section) {
+					this.kube.peices[section[key]].rotation[axis] += Math.PI / 2;
+				}
+			}
 		}
 	}, {
 		key: "animate",
@@ -303,6 +229,210 @@ var Kubrix = function (_PureComponent) {
 }(__WEBPACK_IMPORTED_MODULE_5_react__["PureComponent"]);
 
 __WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(Kubrix, null), document.getElementById("react-app"));
+
+function setInitialState(object) {
+	var _this4 = this;
+
+	// whole cube
+	this.kube.whole = object.children[0];
+
+	object.traverse(function (child) {
+		// take light from scene and adjust for 3js
+		if (child instanceof THREE.PointLight) {
+			child.intensity = 10;
+			child.position.x = 0;
+			child.position.y = 20;
+			child.position.z = 15;
+		}
+
+		// All face referncing starts on the top left of the face and ends at the bottom right.
+		// Starting face reference:
+		// Front: Red
+		// Right: Blue
+		// Back: Yellow
+		// Right: Green
+		// Top: White
+		// Bottom: Yellow
+
+
+		// All sections are divided as if you are looking at the cube from Y-axis looking directly at
+		// the Front ( red face ) in an orthographic view
+
+		// X-axis sections:
+		// left, middle, right
+
+		// Y-axis sections:
+		// front, middle, back
+
+		// Z-axis sections:
+		// top, middle, bottom
+
+
+		// setup the original sectioning of the cube
+		switch (child.name) {
+			case "c1":
+				_this4.kube.peices.c1 = child;
+				_this4.kube.sections.x.left[3] = child.name;
+				_this4.kube.sections.y.front[1] = child.name;
+				_this4.kube.sections.z.top[7] = child.name;
+				break;
+			case "c2":
+				_this4.kube.peices.c2 = child;
+				_this4.kube.sections.x.middle[3] = child.name;
+				_this4.kube.sections.y.front[2] = child.name;
+				_this4.kube.sections.z.top[8] = child.name;
+				break;
+			case "c3":
+				_this4.kube.peices.c3 = child;
+				_this4.kube.sections.x.right[3] = child.name;
+				_this4.kube.sections.y.front[3] = child.name;
+				_this4.kube.sections.z.top[9] = child.name;
+				break;
+			case "c4":
+				_this4.kube.peices.c4 = child;
+				_this4.kube.sections.x.left[6] = child.name;
+				_this4.kube.sections.y.front[4] = child.name;
+				_this4.kube.sections.z.middle[7] = child.name;
+				break;
+			case "c5":
+				_this4.kube.peices.c5 = child;
+				_this4.kube.sections.x.middle[6] = child.name;
+				_this4.kube.sections.y.front[5] = child.name;
+				_this4.kube.sections.z.middle[8] = child.name;
+				break;
+			case "c6":
+				_this4.kube.peices.c6 = child;
+				_this4.kube.sections.x.right[6] = child.name;
+				_this4.kube.sections.y.front[6] = child.name;
+				_this4.kube.sections.z.middle[9] = child.name;
+				break;
+			case "c7":
+				_this4.kube.peices.c7 = child;
+				_this4.kube.sections.x.left[9] = child.name;
+				_this4.kube.sections.y.front[7] = child.name;
+				_this4.kube.sections.z.bottom[7] = child.name;
+				break;
+			case "c8":
+				_this4.kube.peices.c8 = child;
+				_this4.kube.sections.x.middle[9] = child.name;
+				_this4.kube.sections.y.front[8] = child.name;
+				_this4.kube.sections.z.bottom[8] = child.name;
+				break;
+			case "c9":
+				_this4.kube.peices.c9 = child;
+				_this4.kube.sections.x.right[9] = child.name;
+				_this4.kube.sections.y.front[9] = child.name;
+				_this4.kube.sections.z.bottom[9] = child.name;
+				break;
+			case "c10":
+				_this4.kube.peices.c10 = child;
+				_this4.kube.sections.x.left[2] = child.name;
+				_this4.kube.sections.y.middle[1] = child.name;
+				_this4.kube.sections.z.top[4] = child.name;
+				break;
+			case "c11":
+				_this4.kube.peices.c11 = child;
+				_this4.kube.sections.x.middle[2] = child.name;
+				_this4.kube.sections.y.middle[2] = child.name;
+				_this4.kube.sections.z.top[5] = child.name;
+				break;
+			case "c12":
+				_this4.kube.peices.c12 = child;
+				_this4.kube.sections.x.right[2] = child.name;
+				_this4.kube.sections.y.middle[3] = child.name;
+				_this4.kube.sections.z.top[6] = child.name;
+				break;
+			case "c13":
+				_this4.kube.peices.c13 = child;
+				_this4.kube.sections.x.left[5] = child.name;
+				_this4.kube.sections.y.middle[4] = child.name;
+				_this4.kube.sections.z.middle[4] = child.name;
+				break;
+			// c14 doesn't exist
+			case "c15":
+				_this4.kube.peices.c15 = child;
+				_this4.kube.sections.x.right[5] = child.name;
+				_this4.kube.sections.y.middle[6] = child.name;
+				_this4.kube.sections.z.middle[6] = child.name;
+				break;
+			case "c16":
+				_this4.kube.peices.c16 = child;
+				_this4.kube.sections.x.left[8] = child.name;
+				_this4.kube.sections.y.middle[7] = child.name;
+				_this4.kube.sections.z.bottom[4] = child.name;
+				break;
+			case "c17":
+				_this4.kube.peices.c17 = child;
+				_this4.kube.sections.x.middle[8] = child.name;
+				_this4.kube.sections.y.middle[8] = child.name;
+				_this4.kube.sections.z.bottom[5] = child.name;
+				break;
+			case "c18":
+				_this4.kube.peices.c18 = child;
+				_this4.kube.sections.x.right[8] = child.name;
+				_this4.kube.sections.y.middle[9] = child.name;
+				_this4.kube.sections.z.bottom[6] = child.name;
+				break;
+			case "c19":
+				_this4.kube.peices.c19 = child;
+				_this4.kube.sections.x.left[1] = child.name;
+				_this4.kube.sections.y.back[1] = child.name;
+				_this4.kube.sections.z.top[1] = child.name;
+				break;
+			case "c20":
+				_this4.kube.peices.c20 = child;
+				_this4.kube.sections.x.middle[1] = child.name;
+				_this4.kube.sections.y.back[2] = child.name;
+				_this4.kube.sections.z.top[2] = child.name;
+				break;
+			case "c21":
+				_this4.kube.peices.c21 = child;
+				_this4.kube.sections.x.right[1] = child.name;
+				_this4.kube.sections.y.back[3] = child.name;
+				_this4.kube.sections.z.top[3] = child.name;
+				break;
+			case "c22":
+				_this4.kube.peices.c22 = child;
+				_this4.kube.sections.x.left[4] = child.name;
+				_this4.kube.sections.y.back[4] = child.name;
+				_this4.kube.sections.z.middle[1] = child.name;
+				break;
+			case "c23":
+				_this4.kube.peices.c23 = child;
+				_this4.kube.sections.x.middle[4] = child.name;
+				_this4.kube.sections.y.back[5] = child.name;
+				_this4.kube.sections.z.middle[2] = child.name;
+				break;
+			case "c24":
+				_this4.kube.peices.c24 = child;
+				_this4.kube.sections.x.right[4] = child.name;
+				_this4.kube.sections.y.back[6] = child.name;
+				_this4.kube.sections.z.middle[3] = child.name;
+				break;
+			case "c25":
+				_this4.kube.peices.c25 = child;
+				_this4.kube.sections.x.left[7] = child.name;
+				_this4.kube.sections.y.back[7] = child.name;
+				_this4.kube.sections.z.bottom[1] = child.name;
+				break;
+			case "c26":
+				_this4.kube.peices.c26 = child;
+				_this4.kube.sections.x.middle[7] = child.name;
+				_this4.kube.sections.y.back[8] = child.name;
+				_this4.kube.sections.z.bottom[2] = child.name;
+				break;
+			case "c27":
+				_this4.kube.peices.c27 = child;
+				_this4.kube.sections.x.right[7] = child.name;
+				_this4.kube.sections.y.back[9] = child.name;
+				_this4.kube.sections.z.bottom[3] = child.name;
+				break;
+		}
+	});
+
+	console.log(this.kube);
+	this.kube.completedState = this.kube.sections;
+}
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(131)))
 
 /***/ }),
