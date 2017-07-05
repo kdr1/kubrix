@@ -6,6 +6,19 @@ require( "../../node_modules/three/examples/js/controls/TrackballControls.js" );
 const WIDTH = 800;
 const HEIGHT = WIDTH;
 
+const rotateSection = ( section, axis, counterClockwise ) => {
+	let key;
+	if ( !counterClockwise ) {
+		for ( key in section ) {
+			section[ key ].rotation[ axis ] -= Math.PI / 2;
+		}
+	} else {
+		for ( key in section ) {
+			section[ key ].rotation[ axis ] += Math.PI / 2;
+		}
+	}
+}
+
 class Kubrix extends PureComponent {
 	constructor( props ) {
 		super( props );
@@ -14,57 +27,24 @@ class Kubrix extends PureComponent {
 
 		this.kube = {
 			whole: null,
-			reference: {
-				c1: null,
-				c2: null,
-				c3: null,
-				c4: null,
-				c5: null,
-				c6: null,
-				c7: null,
-				c8: null,
-				c9: null,
-				c10: null,
-				c11: null,
-				c12: null,
-				c13: null,
-				c14: null,
-				c15: null,
-				c16: null,
-				c17: null,
-				c18: null,
-				c19: null,
-				c20: null,
-				c21: null,
-				c22: null,
-				c23: null,
-				c24: null,
-				c25: null,
-				c26: null,
-				c27: null
-			},
 			sections: {
 				x: {
-					left: [ ],
-					middle: [ ],
-					right: [ ]
+					left: { },
+					middle: { },
+					right: { }
 				},
 				y: {
-					front: [ ],
-					middle: [ ],
-					back: [ ]
+					front: { },
+					middle: { },
+					back: { }
 				},
 				z: {
-					top: [ ],
-					middle: [ ],
-					bottom: [ ]
+					top: { },
+					middle: { },
+					bottom: { }
 				}
 			}
 		};
-		this.previousMouseLocation = {
-			x: 0,
-			y: 0
-		}
 
 		this.init = this.init.bind( this );
 		this.animate = this.animate.bind( this );
@@ -142,86 +122,126 @@ class Kubrix extends PureComponent {
 					child.position.y = 20;
 					child.position.z = 15;
 				}
+
+
+
+
+
+
+
+
+				// setup the original sectioning of the cube
 				switch ( child.name ) {
 					case "c1":
-						this.kube.reference.c1 = child;
-						this.kube.sections.x.left.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.top.push( child.name );
+						this.kube.sections.y.front[ 1 ] = child;
 						break;
 					case "c2":
-						this.kube.reference.c2 = child;
-						this.kube.sections.x.middle.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.top.push( child.name );
+						this.kube.sections.y.front[ 2 ] = child;
 						break;
 					case "c3":
-						this.kube.reference.c3 = child;
-						this.kube.sections.x.right.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.top.push( child.name );
+						this.kube.sections.y.front[ 3 ] = child;
 						break;
 					case "c4":
-						this.kube.reference.c4 = child;
-						this.kube.sections.x.left.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.middle.push( child.name );
+						this.kube.sections.y.front[ 4 ] = child;
 						break;
 					case "c5":
-						this.kube.reference.c5 = child;
-						this.kube.sections.x.middle.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.middle.push( child.name );
+						this.kube.sections.y.front[ 5 ] = child;
 						break;
 					case "c6":
-						this.kube.reference.c6 = child;
-						this.kube.sections.x.right.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.middle.push( child.name );
+						this.kube.sections.y.front[ 6 ] = child;
 						break;
 					case "c7":
-						this.kube.reference.c7 = child;
-						this.kube.sections.x.left.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.bottom.push( child.name );
+						this.kube.sections.y.front[ 7 ] = child;
 						break;
 					case "c8":
-						this.kube.reference.c8 = child;
-						this.kube.sections.x.middle.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.bottom.push( child.name );
+						this.kube.sections.y.front[ 8 ] = child;
 						break;
 					case "c9":
-						this.kube.reference.c9 = child;
-						this.kube.sections.x.right.push( child.name );
-						this.kube.sections.y.front.push( child.name );
-						this.kube.sections.z.bottom.push( child.name );
+						this.kube.sections.y.front[ 9 ] = child;
 						break;
+
+
+
+
+
 					case "c10":
-					case "c11":
-					case "c12":
-					case "c13":
-					case "c14":
-					case "c15":
-					case "c16":
-					case "c17":
-					case "c18":
-					case "c19":
-					case "c20":
-					case "c21":
-					case "c22":
-					case "c23":
-					case "c24":
-					case "c25":
-					case "c26":
-					case "c27":
+						this.kube.sections.y.middle[ 1 ] = child;
 						break;
+					case "c11":
+						this.kube.sections.y.middle[ 2 ] = child;
+						break;
+					case "c12":
+						this.kube.sections.y.middle[ 3 ] = child;
+						break;
+					case "c13":
+						this.kube.sections.y.middle[ 4 ] = child;
+						break;
+					// c14 doesn't exist
+					case "c15":
+						this.kube.sections.y.middle[ 6 ] = child;
+						break;
+					case "c16":
+						this.kube.sections.y.middle[ 7 ] = child;
+						break;
+					case "c17":
+						this.kube.sections.y.middle[ 8 ] = child;
+						break;
+					case "c18":
+						this.kube.sections.y.middle[ 9 ] = child;
+						break;
+
+
+
+					case "c19":
+						this.kube.sections.y.back[ 1 ] = child;
+						break;
+					case "c20":
+						this.kube.sections.y.back[ 2 ] = child;
+						break;
+					case "c21":
+						this.kube.sections.y.back[ 3 ] = child;
+						break;
+					case "c22":
+						this.kube.sections.y.back[ 4 ] = child;
+						break;
+					case "c23":
+						this.kube.sections.y.back[ 5 ] = child;
+						break;
+					case "c24":
+						this.kube.sections.y.back[ 6 ] = child;
+						break;
+					case "c25":
+						this.kube.sections.y.back[ 7 ] = child;
+						break;
+					case "c26":
+						this.kube.sections.y.back[ 8 ] = child;
+						break;
+					case "c27":
+						this.kube.sections.y.back[ 9 ] = child;
+						break;
+
 				}
 			} );
 
-			this.kube.sections.y.front.forEach( ( faceName ) => {
+
+
+			rotateSection( this.kube.sections.y.back, "y" );
+
+
+
+
+			/*this.kube.sections.y.front.forEach( ( faceName ) => {
 				this.kube.reference[ faceName ].rotation.y -= Math.PI / 2;
-			} );
+			} );*/
+
+			/*this.kube.sections.z.middle.forEach( ( faceName ) => {
+				this.kube.reference[ faceName ].rotation.z -= Math.PI / 2;
+			} );*/
+
+
+			/*this.kube.sections.x.right.forEach( ( faceName ) => {
+				this.kube.reference[ faceName ].rotation.x -= Math.PI / 2;
+			} );*/
 
 			// add object to scene
 			this.three.Scene.add( object );
