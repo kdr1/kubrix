@@ -144,8 +144,8 @@ class Kubrix extends PureComponent {
 
 
 
-			this.rotateSection( "y", "back", true );
-			this.rotateSection( "y", "back" );
+			this.rotateSection( "y", "front" );
+			this.rotateSection( "x", "left" );
 
 
 			// add object to scene
@@ -447,6 +447,38 @@ function YRotationUpdate( section, counterClockwise ) {
 			8: _section[ 6 ],
 			9: _section[ 3 ]
 		};
+		switch ( section ) {
+			case "front":
+				this.kube.sections.x.right = {
+					...this.kube.sections.x.right,
+					3: _section[ 1 ],
+					6: _section[ 2 ],
+					9: _section[ 3 ]
+				}
+				this.kube.sections.x.left = {
+					...this.kube.sections.x.left,
+					3: _section[ 7 ],
+					6: _section[ 8 ],
+					9: _section[ 9 ]
+				}
+				this.kube.sections.z.top = {
+					...this.kube.sections.z.top,
+					7: _section[ 7 ],
+					8: _section[ 4 ],
+					9: _section[ 1 ]
+				}
+				this.kube.sections.z.bottom = {
+					...this.kube.sections.z.bottom,
+					7: _section[ 3 ],
+					8: _section[ 6 ],
+					9: _section[ 9 ]
+				}
+				break;
+			case "middle":
+				break;
+			case "back":
+				break;
+		}
 	} else {
 		let _section = this.kube.sections.y[ section ];
 		this.kube.sections.y[ section ] = {
