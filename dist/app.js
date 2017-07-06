@@ -90,8 +90,17 @@ var Kubrix = function (_PureComponent) {
 					bottom: {}
 				}
 			},
-			// this will be set once the initial state is calculated
-			completedState: null
+			// this will be used to check if the cube is in a compelted state
+			// these are order from the same orientation points that are noted in the
+			// setInitialState function
+			faceColors: {
+				red: ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"],
+				blue: ["c21", "c12", "c3", "c24", "c15", "c6", "c27", "c18", "c9"],
+				orange: ["c19", "c20", "c21", "c22", "c23", "c24", "c25", "c26", "c27"],
+				green: ["c19", "c10", "c1", "c22", "c13", "c4", "c25", "c16", "c7"],
+				white: ["c19", "c20", "c21", "c10", "c11", "c14", "c1", "c2", "c3"],
+				yellow: ["c25", "c26", "c27", "c16", "c17", "c18", "c25", "c26", "c27"]
+			}
 		};
 
 		_this.init = _this.init.bind(_this);
@@ -171,7 +180,8 @@ var Kubrix = function (_PureComponent) {
 
 				setInitialState.call(_this2, object);
 
-				_this2.rotateSection(_this2.kube.sections.z.bottom, "z");
+				_this2.rotateSection("y", "back", true);
+				_this2.rotateSection("y", "back");
 
 				// add object to scene
 				_this2.three.Scene.add(object);
@@ -182,16 +192,18 @@ var Kubrix = function (_PureComponent) {
 		}
 	}, {
 		key: "rotateSection",
-		value: function rotateSection(section, axis, counterClockwise) {
+		value: function rotateSection(axis, section, counterClockwise) {
 			var key = void 0;
 			if (!counterClockwise) {
-				for (key in section) {
-					this.kube.peices[section[key]].rotation[axis] -= Math.PI / 2;
+				for (key in this.kube.sections[axis][section]) {
+					this.kube.peices[this.kube.sections[axis][section][key]].rotation[axis] -= Math.PI / 2;
 				}
+				updateSctions.call(this, axis, section);
 			} else {
-				for (key in section) {
-					this.kube.peices[section[key]].rotation[axis] += Math.PI / 2;
+				for (key in this.kube.sections[axis][section]) {
+					this.kube.peices[this.kube.sections[axis][section][key]].rotation[axis] += Math.PI / 2;
 				}
+				updateSctions.call(this, axis, section, counterClockwise);
 			}
 		}
 	}, {
@@ -431,7 +443,66 @@ function setInitialState(object) {
 	});
 
 	console.log(this.kube);
-	this.kube.completedState = this.kube.sections;
+}
+
+function updateSctions(axis, section, counterClockwise) {
+	switch (axis) {
+		case "x":
+			switch (section) {
+				case "left":
+					//updateXLeft.call( this );
+					break;
+				case "middle":
+					break;
+				case "right":
+					break;
+			}
+			break;
+		case "y":
+			YRotationUpdate.call(this, section, counterClockwise);
+			break;
+		case "z":
+			switch (section) {
+				case "top":
+					break;
+				case "middle":
+					break;
+				case "bottom":
+					console.log("z-bottom");
+					break;
+			}
+			break;
+	}
+}
+
+function YRotationUpdate(section, counterClockwise) {
+	if (!counterClockwise) {
+		var _section = this.kube.sections.y[section];
+		this.kube.sections.y[section] = {
+			1: _section[7],
+			2: _section[4],
+			3: _section[1],
+			4: _section[8],
+			// 5 never changes
+			6: _section[2],
+			7: _section[9],
+			8: _section[6],
+			9: _section[3]
+		};
+	} else {
+		var _section2 = this.kube.sections.y[section];
+		this.kube.sections.y[section] = {
+			1: _section2[3],
+			2: _section2[6],
+			3: _section2[9],
+			4: _section2[2],
+			// 5 never changes
+			6: _section2[8],
+			7: _section2[1],
+			8: _section2[4],
+			9: _section2[7]
+		};
+	}
 }
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(131)))
 

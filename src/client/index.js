@@ -144,8 +144,8 @@ class Kubrix extends PureComponent {
 
 
 
-			this.rotateSection( this.kube.sections.z.bottom, "z" );
-
+			this.rotateSection( "y", "back", true );
+			this.rotateSection( "y", "back" );
 
 
 			// add object to scene
@@ -156,16 +156,18 @@ class Kubrix extends PureComponent {
 		} );
 	}
 
-	rotateSection( section, axis, counterClockwise ) {
+	rotateSection( axis, section, counterClockwise ) {
 		let key;
 		if ( !counterClockwise ) {
-			for ( key in section ) {
-				this.kube.peices[ section[ key ] ].rotation[ axis ] -= Math.PI / 2;
+			for ( key in this.kube.sections[ axis ][ section ] ) {
+				this.kube.peices[ this.kube.sections[ axis ][ section ][ key ] ].rotation[ axis ] -= Math.PI / 2;
 			}
+			updateSctions.call( this, axis, section );
 		} else {
-			for ( key in section ) {
-				this.kube.peices[ section[ key ] ].rotation[ axis ] += Math.PI / 2;
+			for ( key in this.kube.sections[ axis ][ section ] ) {
+				this.kube.peices[ this.kube.sections[ axis ][ section ][ key ] ].rotation[ axis ] += Math.PI / 2;
 			}
+			updateSctions.call( this, axis, section, counterClockwise );
 		}
 	}
 
@@ -400,3 +402,70 @@ function setInitialState( object ) {
 
 	console.log( this.kube );
 }
+
+function updateSctions( axis, section, counterClockwise ) {
+	switch ( axis ) {
+		case "x":
+			switch ( section ) {
+				case "left":
+					//updateXLeft.call( this );
+					break;
+				case "middle":
+					break;
+				case "right":
+					break;
+			}
+			break;
+		case "y":
+			YRotationUpdate.call( this, section, counterClockwise );
+			break;
+		case "z":
+			switch ( section ) {
+				case "top":
+					break;
+				case "middle":
+					break;
+				case "bottom":
+					console.log( "z-bottom");
+					break;
+			}
+			break;
+	}
+}
+
+function YRotationUpdate( section, counterClockwise ) {
+	if ( !counterClockwise ) {
+		let _section = this.kube.sections.y[ section ];
+		this.kube.sections.y[ section ] = {
+			1: _section[ 7 ],
+			2: _section[ 4 ],
+			3: _section[ 1 ],
+			4: _section[ 8 ],
+			// 5 never changes
+			6: _section[ 2 ],
+			7: _section[ 9 ],
+			8: _section[ 6 ],
+			9: _section[ 3 ]
+		};
+	} else {
+		let _section = this.kube.sections.y[ section ];
+		this.kube.sections.y[ section ] = {
+			1: _section[ 3 ],
+			2: _section[ 6 ],
+			3: _section[ 9 ],
+			4: _section[ 2 ],
+			// 5 never changes
+			6: _section[ 8 ],
+			7: _section[ 1 ],
+			8: _section[ 4 ],
+			9: _section[ 7 ]
+		};
+	}
+}
+
+
+
+
+
+
+
