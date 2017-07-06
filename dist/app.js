@@ -1,24 +1,26 @@
 webpackJsonp([1],{
 
-/***/ 132:
+/***/ 133:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function(THREE) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_dom__);
+/* WEBPACK VAR INJECTION */(function(THREE) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_get_prototype_of__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_get_prototype_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_get_prototype_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_react_dom__);
 
 
 
@@ -27,18 +29,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__webpack_require__(291);
+
+__webpack_require__(296);
 
 var WIDTH = 800;
 var HEIGHT = WIDTH;
 
 var Kubrix = function (_PureComponent) {
-	__WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_inherits___default()(Kubrix, _PureComponent);
+	__WEBPACK_IMPORTED_MODULE_5_babel_runtime_helpers_inherits___default()(Kubrix, _PureComponent);
 
 	function Kubrix(props) {
-		__WEBPACK_IMPORTED_MODULE_1_babel_runtime_helpers_classCallCheck___default()(this, Kubrix);
+		__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_classCallCheck___default()(this, Kubrix);
 
-		var _this = __WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Kubrix.__proto__ || __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_object_get_prototype_of___default()(Kubrix)).call(this, props));
+		var _this = __WEBPACK_IMPORTED_MODULE_4_babel_runtime_helpers_possibleConstructorReturn___default()(this, (Kubrix.__proto__ || __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_object_get_prototype_of___default()(Kubrix)).call(this, props));
 
 		_this.three = {};
 
@@ -90,8 +93,17 @@ var Kubrix = function (_PureComponent) {
 					bottom: {}
 				}
 			},
-			// this will be set once the initial state is calculated
-			completedState: null
+			// this will be used to check if the cube is in a compelted state
+			// these are order from the same orientation points that are noted in the
+			// setInitialState function
+			faceColors: {
+				red: ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"],
+				blue: ["c21", "c12", "c3", "c24", "c15", "c6", "c27", "c18", "c9"],
+				orange: ["c19", "c20", "c21", "c22", "c23", "c24", "c25", "c26", "c27"],
+				green: ["c19", "c10", "c1", "c22", "c13", "c4", "c25", "c16", "c7"],
+				white: ["c19", "c20", "c21", "c10", "c11", "c14", "c1", "c2", "c3"],
+				yellow: ["c25", "c26", "c27", "c16", "c17", "c18", "c25", "c26", "c27"]
+			}
 		};
 
 		_this.init = _this.init.bind(_this);
@@ -101,7 +113,7 @@ var Kubrix = function (_PureComponent) {
 		return _this;
 	}
 
-	__WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_createClass___default()(Kubrix, [{
+	__WEBPACK_IMPORTED_MODULE_3_babel_runtime_helpers_createClass___default()(Kubrix, [{
 		key: "shouldComponentUpdate",
 		value: function shouldComponentUpdate() {
 			return false;
@@ -171,7 +183,8 @@ var Kubrix = function (_PureComponent) {
 
 				setInitialState.call(_this2, object);
 
-				_this2.rotateSection(_this2.kube.sections.z.bottom, "z");
+				_this2.rotateSection("y", "front");
+				_this2.rotateSection("x", "left");
 
 				// add object to scene
 				_this2.three.Scene.add(object);
@@ -182,16 +195,18 @@ var Kubrix = function (_PureComponent) {
 		}
 	}, {
 		key: "rotateSection",
-		value: function rotateSection(section, axis, counterClockwise) {
+		value: function rotateSection(axis, section, counterClockwise) {
 			var key = void 0;
 			if (!counterClockwise) {
-				for (key in section) {
-					this.kube.peices[section[key]].rotation[axis] -= Math.PI / 2;
+				for (key in this.kube.sections[axis][section]) {
+					this.kube.peices[this.kube.sections[axis][section][key]].rotation[axis] -= Math.PI / 2;
 				}
+				updateSctions.call(this, axis, section);
 			} else {
-				for (key in section) {
-					this.kube.peices[section[key]].rotation[axis] += Math.PI / 2;
+				for (key in this.kube.sections[axis][section]) {
+					this.kube.peices[this.kube.sections[axis][section][key]].rotation[axis] += Math.PI / 2;
 				}
+				updateSctions.call(this, axis, section, counterClockwise);
 			}
 		}
 	}, {
@@ -215,10 +230,10 @@ var Kubrix = function (_PureComponent) {
 		value: function render() {
 			var _this3 = this;
 
-			return __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(
+			return __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(
 				"div",
 				{ id: "_kubrix" },
-				__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("div", { id: "_3js-container", ref: function ref(el) {
+				__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("div", { id: "_3js-container", ref: function ref(el) {
 						_this3.three.container = el;
 					} })
 			);
@@ -226,9 +241,9 @@ var Kubrix = function (_PureComponent) {
 	}]);
 
 	return Kubrix;
-}(__WEBPACK_IMPORTED_MODULE_5_react__["PureComponent"]);
+}(__WEBPACK_IMPORTED_MODULE_6_react__["PureComponent"]);
 
-__WEBPACK_IMPORTED_MODULE_6_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(Kubrix, null), document.getElementById("react-app"));
+__WEBPACK_IMPORTED_MODULE_7_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(Kubrix, null), document.getElementById("react-app"));
 
 function setInitialState(object) {
 	var _this4 = this;
@@ -431,18 +446,105 @@ function setInitialState(object) {
 	});
 
 	console.log(this.kube);
-	this.kube.completedState = this.kube.sections;
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(131)))
+
+function updateSctions(axis, section, counterClockwise) {
+	switch (axis) {
+		case "x":
+			switch (section) {
+				case "left":
+					//updateXLeft.call( this );
+					break;
+				case "middle":
+					break;
+				case "right":
+					break;
+			}
+			break;
+		case "y":
+			YRotationUpdate.call(this, section, counterClockwise);
+			break;
+		case "z":
+			switch (section) {
+				case "top":
+					break;
+				case "middle":
+					break;
+				case "bottom":
+					console.log("z-bottom");
+					break;
+			}
+			break;
+	}
+}
+
+function YRotationUpdate(section, counterClockwise) {
+	if (!counterClockwise) {
+		var _section = this.kube.sections.y[section];
+		this.kube.sections.y[section] = {
+			1: _section[7],
+			2: _section[4],
+			3: _section[1],
+			4: _section[8],
+			// 5 never changes
+			6: _section[2],
+			7: _section[9],
+			8: _section[6],
+			9: _section[3]
+		};
+		switch (section) {
+			case "front":
+				this.kube.sections.x.right = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, this.kube.sections.x.right, {
+					3: _section[1],
+					6: _section[2],
+					9: _section[3]
+				});
+				this.kube.sections.x.left = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, this.kube.sections.x.left, {
+					3: _section[7],
+					6: _section[8],
+					9: _section[9]
+				});
+				this.kube.sections.z.top = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, this.kube.sections.z.top, {
+					7: _section[7],
+					8: _section[4],
+					9: _section[1]
+				});
+				this.kube.sections.z.bottom = __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_extends___default()({}, this.kube.sections.z.bottom, {
+					7: _section[3],
+					8: _section[6],
+					9: _section[9]
+				});
+				break;
+			case "middle":
+				break;
+			case "back":
+				break;
+		}
+	} else {
+		var _section2 = this.kube.sections.y[section];
+		this.kube.sections.y[section] = {
+			1: _section2[3],
+			2: _section2[6],
+			3: _section2[9],
+			4: _section2[2],
+			// 5 never changes
+			6: _section2[8],
+			7: _section2[1],
+			8: _section2[4],
+			9: _section2[7]
+		};
+	}
+}
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(132)))
 
 /***/ }),
 
-/***/ 293:
+/***/ 298:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(132);
+module.exports = __webpack_require__(133);
 
 
 /***/ })
 
-},[293]);
+},[298]);
